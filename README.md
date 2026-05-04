@@ -6,7 +6,7 @@ Powered by Orioles Magic.
 
 ## What does it look like?
 Current public release - https://mlbwatcher.netlify.app
-Beta release - https://harveyoc.github.io/MLB-Watcher/#/
+Beta release - https://harveyoc.github.io/MLB-Watcher/#/ 
 
 ## How it works
 
