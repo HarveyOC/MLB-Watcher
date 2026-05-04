@@ -1,0 +1,16 @@
+[build]
+  publish = "."
+
+# SPA-style fallback so direct navigation to any path returns index.html
+# (we use hash routing so this is mostly belt-and-braces)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
