@@ -1374,6 +1374,7 @@ body {
   opacity: 0.18;
   z-index: 0;
   pointer-events: none;
+  filter: blur(3px);
   /* Mask: full opacity in the middle, fading to transparent at top/bottom edges
      so the stadium image blends seamlessly into the card's dark background. */
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 25%, black 75%, transparent 100%);
@@ -1440,14 +1441,12 @@ body {
 }
 .pbp-pregame-prob {
   padding: 16px;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.30);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 .pbp-pregame-prob-team {
   display: flex;
