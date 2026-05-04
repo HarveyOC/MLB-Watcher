@@ -313,25 +313,25 @@ body {
   position: absolute;
   top: -20px;
   bottom: -20px;
-  width: 175px;
+  width: 220px;
   pointer-events: none;
   z-index: 0;
 }
 .gc-team-away::before {
-  /* Center the pseudo so its midpoint aligns with the left edge of the card (x=0). */
-  left: -87.5px;
+  /* Center sits 40px outside the left edge of the card. */
+  left: -150px;
   background: radial-gradient(
-    ellipse 70% 70% at 50% calc(50% - 10px),
+    ellipse 70% 70% at 50% calc(50% - 25px),
     rgba(var(--team-rgb, 136, 136, 136), 0.7) 0%,
     rgba(var(--team-rgb, 136, 136, 136), 0.3) 35%,
     rgba(var(--team-rgb, 136, 136, 136), 0) 70%
   );
 }
 .gc-team-home::before {
-  /* Mirror for the right side */
-  right: -87.5px;
+  /* Mirror: center sits 40px outside the right edge of the card. */
+  right: -150px;
   background: radial-gradient(
-    ellipse 70% 70% at 50% calc(50% - 10px),
+    ellipse 70% 70% at 50% calc(50% - 25px),
     rgba(var(--team-rgb, 136, 136, 136), 0.7) 0%,
     rgba(var(--team-rgb, 136, 136, 136), 0.3) 35%,
     rgba(var(--team-rgb, 136, 136, 136), 0) 70%

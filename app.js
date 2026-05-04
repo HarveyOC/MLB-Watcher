@@ -223,39 +223,51 @@
   };
 
   // Stadium images keyed by team ID, used as a faded backdrop on the pre-game screen.
-  // Wikimedia Commons URLs are stable and hotlinkable. If a team isn't in this map,
-  // the pre-game backdrop falls back to a plain dark gradient.
+  // Set the value to a stable, hotlinkable image URL (e.g. from your own CDN, Unsplash,
+  // or a verified Wikimedia URL). An empty string means "no image yet" — the pre-game
+  // backdrop falls back to a plain dark gradient for that team.
   const STADIUM_IMAGES = {
-    108: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Angel_Stadium_2014.jpg/1280px-Angel_Stadium_2014.jpg', // Angel Stadium
-    109: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Chase_Field_2017.jpg/1280px-Chase_Field_2017.jpg', // Chase Field
-    110: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Oriole_Park_at_Camden_Yards_%28Cropped%29.jpg/1280px-Oriole_Park_at_Camden_Yards_%28Cropped%29.jpg', // Camden Yards
-    111: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Fenway_Park_2012.jpg/1280px-Fenway_Park_2012.jpg', // Fenway Park
-    112: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Wrigley_Field_2024.jpg/1280px-Wrigley_Field_2024.jpg', // Wrigley Field
-    113: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Great_American_Ball_Park.jpg/1280px-Great_American_Ball_Park.jpg', // Great American Ball Park
-    114: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Progressive_Field_2016.jpg/1280px-Progressive_Field_2016.jpg', // Progressive Field
-    115: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Coors_Field_2014.jpg/1280px-Coors_Field_2014.jpg', // Coors Field
-    116: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Comerica_Park_Tigers_Marlins_2016.jpg/1280px-Comerica_Park_Tigers_Marlins_2016.jpg', // Comerica Park
-    117: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Minute_Maid_Park.jpg/1280px-Minute_Maid_Park.jpg', // Daikin Park (Minute Maid)
-    118: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Kauffman_Stadium_June_2018.jpg/1280px-Kauffman_Stadium_June_2018.jpg', // Kauffman Stadium
-    119: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Dodger_Stadium_field_from_upper_deck_2015-10-04.jpg/1280px-Dodger_Stadium_field_from_upper_deck_2015-10-04.jpg', // Dodger Stadium
-    120: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Nats_Park_2018.jpg/1280px-Nats_Park_2018.jpg', // Nationals Park
-    121: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Citi_Field_July_2018.jpg/1280px-Citi_Field_July_2018.jpg', // Citi Field
-    133: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Sutter_Health_Park.jpg/1280px-Sutter_Health_Park.jpg', // Sutter Health Park (A's 2025+)
-    134: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/PNC_Park_2008.jpg/1280px-PNC_Park_2008.jpg', // PNC Park
-    135: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Petco_Park.jpg/1280px-Petco_Park.jpg', // Petco Park
-    136: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/T-Mobile_Park_2019.jpg/1280px-T-Mobile_Park_2019.jpg', // T-Mobile Park
-    137: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Oracle_Park_-_San_Francisco_Giants.jpg/1280px-Oracle_Park_-_San_Francisco_Giants.jpg', // Oracle Park
-    138: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Busch_Stadium_2017.jpg/1280px-Busch_Stadium_2017.jpg', // Busch Stadium
-    139: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Tropicana_Field_2014.jpg/1280px-Tropicana_Field_2014.jpg', // Tropicana Field
-    140: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Globe_Life_Field_2020.jpg/1280px-Globe_Life_Field_2020.jpg', // Globe Life Field
-    141: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Rogers_Centre_June_2010.jpg/1280px-Rogers_Centre_June_2010.jpg', // Rogers Centre
-    142: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Target_Field_2014.jpg/1280px-Target_Field_2014.jpg', // Target Field
-    143: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Citizens_Bank_Park_2017.jpg/1280px-Citizens_Bank_Park_2017.jpg', // Citizens Bank Park
-    144: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Truist_Park.jpg/1280px-Truist_Park.jpg', // Truist Park
-    145: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Guaranteed_Rate_Field.jpg/1280px-Guaranteed_Rate_Field.jpg', // Rate Field (Guaranteed Rate)
-    146: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/LoanDepot_Park_2022.jpg/1280px-LoanDepot_Park_2022.jpg', // loanDepot park
-    147: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Yankee_Stadium_field_from_upper_deck_2010.jpg/1280px-Yankee_Stadium_field_from_upper_deck_2010.jpg', // Yankee Stadium
-    158: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Miller_Park.jpg/1280px-Miller_Park.jpg' // American Family Field
+    // ----- AL East -----
+    110: '', // BAL · Camden Yards
+    111: '', // BOS · Fenway Park
+    139: '', // TB  · Tropicana Field (Steinbrenner Field 2025)
+    141: '', // TOR · Rogers Centre
+    147: '', // NYY · Yankee Stadium
+
+    // ----- AL Central -----
+    114: '', // CLE · Progressive Field
+    116: '', // DET · Comerica Park
+    118: '', // KC  · Kauffman Stadium
+    142: '', // MIN · Target Field
+    145: '', // CHW · Rate Field
+
+    // ----- AL West -----
+    108: '', // LAA · Angel Stadium
+    117: '', // HOU · Daikin Park
+    133: '', // OAK · Sutter Health Park (West Sacramento)
+    136: '', // SEA · T-Mobile Park
+    140: '', // TEX · Globe Life Field
+
+    // ----- NL East -----
+    120: '', // WSH · Nationals Park
+    121: '', // NYM · Citi Field
+    143: '', // PHI · Citizens Bank Park
+    144: '', // ATL · Truist Park
+    146: '', // MIA · loanDepot park
+
+    // ----- NL Central -----
+    112: '', // CHC · Wrigley Field
+    113: '', // CIN · Great American Ball Park
+    134: '', // PIT · PNC Park
+    138: '', // STL · Busch Stadium
+    158: '', // MIL · American Family Field
+
+    // ----- NL West -----
+    109: '', // ARI · Chase Field
+    115: '', // COL · Coors Field
+    119: '', // LAD · Dodger Stadium
+    135: '', // SD  · Petco Park
+    137: ''  // SF  · Oracle Park
   };
   const stadiumImage = (teamId) => STADIUM_IMAGES[teamId] || null;
   // Convert hex (#RRGGBB) to "r, g, b" string for use in rgba()
