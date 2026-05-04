@@ -1,5 +1,5 @@
 /* ============================================
-   BirdWatcher — MLB live tracker
+   MLB Watcher — MLB live tracker
    Powered by Orioles Magic
    ============================================ */
 
@@ -228,11 +228,11 @@
   // backdrop falls back to a plain dark gradient for that team.
   const STADIUM_IMAGES = {
     // ----- AL East -----
-    110: '', // BAL · Camden Yards
+    110: 'https://img.mlbstatic.com/mlb-images/image/private/t_16x9/t_w2208/mlb/bivu8ka3et1ska3m8rxb.jpg', // BAL · Camden Yards
     111: '', // BOS · Fenway Park
     139: '', // TB  · Tropicana Field (Steinbrenner Field 2025)
     141: '', // TOR · Rogers Centre
-    147: '', // NYY · Yankee Stadium
+    147: 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Yankee_Stadium_Grandstand_Level_View.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // NYY · Yankee Stadium
 
     // ----- AL Central -----
     114: '', // CLE · Progressive Field
