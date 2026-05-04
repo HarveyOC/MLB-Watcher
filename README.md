@@ -4,6 +4,10 @@ Live MLB game tracker with a customisable display buffer.
 Made by HarveyOC (@hxoxcx) for Orioles BirdWatcher.
 Powered by Orioles Magic.
 
+## What does it look like?
+Current public release - https://mlbwatcher.netlify.app
+Beta release - https://harveyoc.github.io/MLB-Watcher/#/
+
 ## How it works
 
 Three views, all hash-routed so the browser back / forward buttons just work:
