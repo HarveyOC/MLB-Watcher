@@ -7,6 +7,25 @@
   'use strict';
 
   // ============================================
+  //  DEV FLAGS
+  // ============================================
+  // Read once on load. Lets you force the play-by-play card into a specific mode
+  // for visual testing when no live games are available.
+  // Usage: append ?force=active | inactive | pregame | final to the site URL.
+  // The flag survives hash navigation since it's read from search params, not the hash.
+  const FORCE_PBP_MODE = (() => {
+    try {
+      const v = (new URLSearchParams(window.location.search).get('force') || '').toLowerCase();
+      if (['active', 'inactive', 'pregame', 'final'].includes(v)) return v;
+    } catch (_) { /* ignore */ }
+    return null;
+  })();
+  if (FORCE_PBP_MODE) {
+    // Surface the flag in the console so it's obvious during testing
+    console.info(`[BirdWatcher] Forcing PBP mode: ${FORCE_PBP_MODE}`);
+  }
+
+  // ============================================
   //  STATIC ASSETS
   // ============================================
   // Cached batter SVG path data for strike zone overlay.
@@ -229,45 +248,45 @@
   const STADIUM_IMAGES = {
     // ----- AL East -----
     110: 'https://img.mlbstatic.com/mlb-images/image/private/t_16x9/t_w2208/mlb/bivu8ka3et1ska3m8rxb.jpg', // BAL · Camden Yards
-    111: '', // BOS · Fenway Park
-    139: '', // TB  · Tropicana Field (Steinbrenner Field 2025)
-    141: '', // TOR · Rogers Centre
+    111: 'https://upload.wikimedia.org/wikipedia/commons/4/4f/131023-F-PR861-033_Hanscom_participates_in_World_Series_pregame_events.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // BOS · Fenway Park
+    139: 'https://upload.wikimedia.org/wikipedia/commons/0/06/Tropicana_Field_Opening_Day_2002.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // TB  · Tropicana Field (Steinbrenner Field 2025)
+    141: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Blue_Jays_-_Rogers_Center_-_Opening_Day_-_2018_%2840312756925%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // TOR · Rogers Centre
     147: 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Yankee_Stadium_Grandstand_Level_View.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // NYY · Yankee Stadium
 
     // ----- AL Central -----
-    114: '', // CLE · Progressive Field
-    116: '', // DET · Comerica Park
-    118: '', // KC  · Kauffman Stadium
-    142: '', // MIN · Target Field
-    145: '', // CHW · Rate Field
+    114: 'https://upload.wikimedia.org/wikipedia/commons/8/85/Progressive_Field_%28Oct._7%2C_2022%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // CLE · Progressive Field
+    116: 'https://upload.wikimedia.org/wikipedia/commons/d/d7/Comerica_Park_-_Detroit%2C_MI.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // DET · Comerica Park
+    118: 'https://upload.wikimedia.org/wikipedia/commons/4/47/NewKauffman.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // KC  · Kauffman Stadium
+    142: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/USMC-06958.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // MIN · Target Field
+    145: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/US_Navy_100406-N-1232M-001_Sailors_assigned_to_various_commands_at_Naval_Station_Great_Lakes_unfurl_an_American_flag_before_the_2010_home_opening_Chicago_White_Sox_baseball_game.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // CHW · Rate Field
 
     // ----- AL West -----
-    108: '', // LAA · Angel Stadium
-    117: '', // HOU · Daikin Park
-    133: '', // OAK · Sutter Health Park (West Sacramento)
-    136: '', // SEA · T-Mobile Park
-    140: '', // TEX · Globe Life Field
+    108: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Angel_Stadium_of_Anaheim.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // LAA · Angel Stadium
+    117: 'https://upload.wikimedia.org/wikipedia/commons/e/e9/Daikin_Park_in_August_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // HOU · Daikin Park
+    133: 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Sutter_Health_Park_in_Sacramento%2C_CA.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // OAK · Sutter Health Park (West Sacramento)
+    136: 'https://upload.wikimedia.org/wikipedia/commons/0/06/Safeco_Field%2C_Seattle-.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // SEA · T-Mobile Park
+    140: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/Rangers_Ballpark_in_Arlington.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // TEX · Globe Life Field
 
     // ----- NL East -----
-    120: '', // WSH · Nationals Park
-    121: '', // NYM · Citi Field
-    143: '', // PHI · Citizens Bank Park
-    144: '', // ATL · Truist Park
-    146: '', // MIA · loanDepot park
+    120: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Opening_of_Nationals_Park_-_033_%282377914373%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // WSH · Nationals Park
+    121: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Citi_Field_Day.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // NYM · Citi Field
+    143: 'https://upload.wikimedia.org/wikipedia/commons/f/f2/Fieldatthepark.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // PHI · Citizens Bank Park
+    144: 'https://upload.wikimedia.org/wikipedia/commons/0/04/Truist_Park_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // ATL · Truist Park
+    146: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Marlins_First_Pitch_at_Marlins_Park%2C_April_4%2C_2012_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // MIA · loanDepot park
 
     // ----- NL Central -----
-    112: '', // CHC · Wrigley Field
-    113: '', // CIN · Great American Ball Park
-    134: '', // PIT · PNC Park
-    138: '', // STL · Busch Stadium
-    158: '', // MIL · American Family Field
+    112: 'https://upload.wikimedia.org/wikipedia/commons/0/04/Wrigley_Field_Panorama.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // CHC · Wrigley Field
+    113: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Great_American_Ball_Park_with_The_Gap_on_July_5%2C_2003_Cincinnati_Reds_versus_New_York_Mets.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // CIN · Great American Ball Park
+    134: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Pittsburgh_Pirates_park_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // PIT · PNC Park
+    138: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/April_Downloads_016.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // STL · Busch Stadium
+    158: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Milwaukee_Miller_Park_2009.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // MIL · American Family Field
 
     // ----- NL West -----
-    109: '', // ARI · Chase Field
-    115: '', // COL · Coors Field
-    119: '', // LAD · Dodger Stadium
-    135: '', // SD  · Petco Park
-    137: ''  // SF  · Oracle Park
+    109: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Reserve_A-10_Warthogs_Flyover_2023_World_Series_%288099146%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // ARI · Chase Field
+    115: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Hero_of_the_Game-_Staff_Sgt_Cassandra_Jackson_%288545237%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // COL · Coors Field
+    119: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Dodger_Stadium_-_September_11%2C_2024.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // LAD · Dodger Stadium
+    135: 'https://upload.wikimedia.org/wikipedia/commons/5/55/Petco_Park_Padres_Game.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original', // SD  · Petco Park
+    137: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Oracle_Park_-_August_2025_-_Sarah_Stierch_-_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original'  // SF  · Oracle Park
   };
   const stadiumImage = (teamId) => STADIUM_IMAGES[teamId] || null;
   // Convert hex (#RRGGBB) to "r, g, b" string for use in rgba()
@@ -1701,6 +1720,7 @@
     }
 
     function isFinalMode(gd) {
+      if (FORCE_PBP_MODE) return FORCE_PBP_MODE === 'final';
       const status = (gd && gd.status) || {};
       const abstract = (status.abstractGameState || '').toLowerCase();
       const detailed = (status.detailedState || '').toLowerCase();
@@ -1708,6 +1728,7 @@
     }
 
     function isPreGameMode(gd) {
+      if (FORCE_PBP_MODE) return FORCE_PBP_MODE === 'pregame';
       const status = (gd && gd.status) || {};
       const abstract = (status.abstractGameState || '').toLowerCase();
       const detailed = (status.detailedState || '').toLowerCase();
@@ -1721,6 +1742,7 @@
     }
 
     function isInactiveMode(ls, ld) {
+      if (FORCE_PBP_MODE) return FORCE_PBP_MODE === 'inactive';
       // Inactive: end of half-inning. Heuristic: inningState is "End" or "Middle"
       const state = (ls.inningState || '').toLowerCase();
       return state === 'end' || state === 'middle' || ld.plays && ld.plays.currentPlay && ld.plays.currentPlay.about && ld.plays.currentPlay.about.isComplete && (ls.outs === 3);
@@ -1915,8 +1937,31 @@
             onerror: function () { this.style.opacity = '0.3'; }
           });
           row.appendChild(photo);
-          row.appendChild(el('span', { class: 'name' }, b.name));
-          row.appendChild(el('span', { class: 'rec' }, `${b.hits} for ${b.atBats}`));
+
+          // Center column: name, then a sub-row of record + action chips
+          const center = el('div', { class: 'lineup-center' });
+          center.appendChild(el('div', { class: 'lineup-name' }, b.name));
+
+          const sub = el('div', { class: 'lineup-sub' });
+          sub.appendChild(el('span', { class: 'lineup-rec' }, `${b.hits} for ${b.atBats}`));
+          if (b.actions && b.actions.length > 0) {
+            const chips = el('span', { class: 'lineup-actions' });
+            b.actions.forEach(code => {
+              chips.appendChild(el('span', { class: 'lineup-action-chip' }, code));
+            });
+            sub.appendChild(chips);
+          }
+          center.appendChild(sub);
+          row.appendChild(center);
+
+          // Right column: season AVG
+          if (b.seasonAvg) {
+            const avgWrap = el('div', { class: 'lineup-avg' });
+            avgWrap.appendChild(el('div', { class: 'lineup-avg-label' }, 'AVG'));
+            avgWrap.appendChild(el('div', { class: 'lineup-avg-val' }, b.seasonAvg));
+            row.appendChild(avgWrap);
+          }
+
           lineup.appendChild(row);
         });
       }
@@ -2037,6 +2082,29 @@
           ptxt.appendChild(el('div', { class: 'pbp-pregame-prob-name' },
             prob ? prob.fullName : 'TBD'
           ));
+
+          // Season stats row: W-L · ERA. Only render if we have any data.
+          if (prob && prob.id) {
+            const stats = getPitcherSeasonStats(box, side, prob.id);
+            const parts = [];
+            if (stats.wins != null && stats.losses != null) {
+              parts.push({ label: 'W–L', val: `${stats.wins}–${stats.losses}` });
+            }
+            if (stats.era != null) {
+              parts.push({ label: 'ERA', val: String(stats.era) });
+            }
+            if (parts.length > 0) {
+              const statsRow = el('div', { class: 'pbp-pregame-prob-stats' });
+              parts.forEach(s => {
+                const cell = el('div', { class: 'pbp-pregame-prob-stat' });
+                cell.appendChild(el('span', { class: 'pbp-pregame-prob-stat-label' }, s.label));
+                cell.appendChild(el('span', { class: 'pbp-pregame-prob-stat-val' }, s.val));
+                statsRow.appendChild(cell);
+              });
+              ptxt.appendChild(statsRow);
+            }
+          }
+
           pitcherBox.appendChild(ptxt);
           c.appendChild(pitcherBox);
 
@@ -2366,6 +2434,22 @@
       return '.---';
     }
 
+    // Pitcher season stats (W-L, ERA). Reads from boxscore.players[ID].seasonStats.pitching.
+    // Returns nulls when the data isn't yet present (e.g. probable pitcher not in boxscore).
+    function getPitcherSeasonStats(box, side, playerId) {
+      if (!playerId) return { wins: null, losses: null, era: null };
+      const players = box.teams && box.teams[side] && box.teams[side].players;
+      if (!players) return { wins: null, losses: null, era: null };
+      const p = players[`ID${playerId}`];
+      const ss = p && p.seasonStats && p.seasonStats.pitching;
+      if (!ss) return { wins: null, losses: null, era: null };
+      return {
+        wins: typeof ss.wins === 'number' ? ss.wins : (ss.wins != null ? Number(ss.wins) : null),
+        losses: typeof ss.losses === 'number' ? ss.losses : (ss.losses != null ? Number(ss.losses) : null),
+        era: ss.era || null
+      };
+    }
+
     function getPitcherGameStats(box, side, playerId) {
       if (!playerId) return { ip: '0.0', k: 0, ob: 0 };
       const players = box.teams && box.teams[side] && box.teams[side].players;
@@ -2406,6 +2490,48 @@
       };
     }
 
+    // Compact short codes for at-bat results, used in the on-deck lineup card.
+    // Falls back to the first 3 chars of the event description for anything unmapped.
+    const AB_RESULT_CODES = {
+      'Single': '1B',
+      'Double': '2B',
+      'Triple': '3B',
+      'Home Run': 'HR',
+      'Walk': 'BB',
+      'Intent Walk': 'IBB',
+      'Hit By Pitch': 'HBP',
+      'Strikeout': 'K',
+      'Strikeout Double Play': 'K-DP',
+      'Sac Fly': 'SF',
+      'Sac Bunt': 'SH',
+      'Sacrifice Bunt': 'SH',
+      'Sacrifice Fly': 'SF',
+      'Field Error': 'E',
+      'Fielders Choice': 'FC',
+      'Fielders Choice Out': 'FC',
+      'Grounded Into DP': 'GIDP',
+      'Double Play': 'DP',
+      'Triple Play': 'TP',
+      'Forceout': 'FO',
+      'Force Out': 'FO',
+      'Pop Out': 'P',
+      'Lineout': 'L',
+      'Flyout': 'F',
+      'Fly Out': 'F',
+      'Groundout': 'G',
+      'Ground Out': 'G',
+      'Catcher Interference': 'CI',
+      'Bunt Pop Out': 'BP',
+      'Bunt Groundout': 'BG',
+      'Bunt Lineout': 'BL'
+    };
+    function abResultCode(event) {
+      if (!event) return '';
+      if (AB_RESULT_CODES[event]) return AB_RESULT_CODES[event];
+      // Fallback: take initials of the event words, capped at 4 chars
+      return event.split(/\s+/).map(w => w[0] || '').join('').toUpperCase().slice(0, 4);
+    }
+
     function getNextThreeBatters(box, ld, ls, side) {
       const teamBox = box.teams && box.teams[side];
       if (!teamBox) return [];
@@ -2442,17 +2568,33 @@
         if (idx >= 0) startIdx = idx;
       }
 
+      // Collect each batter's completed at-bat results in order, used for the action chips.
+      const allPlays = (ld.plays && ld.plays.allPlays) || [];
+      const actionsByBatter = {};
+      allPlays.forEach(play => {
+        if (!play.about || !play.about.isComplete) return;
+        if (!play.matchup || !play.matchup.batter) return;
+        const event = play.result && play.result.event;
+        if (!event) return;
+        const bid = play.matchup.batter.id;
+        if (!actionsByBatter[bid]) actionsByBatter[bid] = [];
+        actionsByBatter[bid].push(abResultCode(event));
+      });
+
       const result = [];
       for (let i = 0; i < 3; i++) {
         const pid = battingOrder[(startIdx + i) % battingOrder.length];
         const p = teamBox.players && teamBox.players[`ID${pid}`];
         if (!p) continue;
         const bs = (p.stats && p.stats.batting) || {};
+        const ss = (p.seasonStats && p.seasonStats.batting) || {};
         result.push({
           id: pid,
           name: (p.person && p.person.fullName) || p.name || '',
           hits: num(bs.hits),
-          atBats: num(bs.atBats)
+          atBats: num(bs.atBats),
+          seasonAvg: ss.avg || null,
+          actions: actionsByBatter[pid] || []
         });
       }
       return result;
