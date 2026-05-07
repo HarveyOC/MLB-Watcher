@@ -96,7 +96,7 @@
   const DEFAULT_BUFFER_MS = 80 * 1000; // 80 seconds
   const DEFAULT_ACCENT_HEX = '#ff7a1a';
   const SCHEDULE_POLL_MS = 30 * 1000;
-  const LIVE_FEED_POLL_MS = 8 * 1000;
+  const LIVE_FEED_POLL_MS = 5 * 1000;
   const ROTATING_STAT_INTERVAL_MS = 60 * 1000;
   const CAROUSEL_ROTATION_MS = 12 * 1000;
 
@@ -2650,7 +2650,7 @@
         type: 'range',
         min: '0',
         max: '180',
-        step: '10',
+        step: '5',
         value: String(initialSec),
         class: 'settings-slider'
       });
