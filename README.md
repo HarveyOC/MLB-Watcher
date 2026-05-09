@@ -40,6 +40,17 @@ If the broadcast is itself delayed, and we want to avoid spoiling plays
 before they air. The home page is exempt because it shows top-line scores
 that you'd already see on any scoreboard.
 
+## Testing changes
+
+You can append the following flags to the URL for testing changes to match screens and the play-by-play view. They will force the app to display the most recent time these states were shown, or display them with empty data if they haven't occured yet. Best practice is to use a completed game from a previous day.
+
+`https://mlbwatcher.netlify.app/?force=flag#/game/99999`
+
+- Active: The strikezone view, with balls and strikes and pitch sequence
+- Inactive: Mid-inning view, showing next three batters
+- Pregame: Probable pitchers and start time
+- Final: Winning and losing pitchers, notable batters
+
 ## CORS fallback
 
 `statsapi.mlb.com` normally allows browser requests. If you hit a CORS
